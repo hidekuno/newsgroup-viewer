@@ -49,7 +49,7 @@ int main(int argc,char** argv) {
 	void (*create_tree_impl)(shared_ptr<Item>&, istream&, const char);
 	create_tree_impl = create_tree;
 
-	for (int opt = 0,opterr = 0; (opt = getopt(argc, argv, "f:lmo")) != -1; ) {
+	for (int opt = 0; (opt = getopt(argc, argv, "f:lmo")) != -1; ) {
 		switch (opt) {
 		case 'f':
 			filename = optarg;
