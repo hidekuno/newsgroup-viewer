@@ -87,7 +87,7 @@ namespace tree {
             if (cache[full_name] != nullptr) continue;
 
             size_t ridx = full_name.rfind(sep);
-            if (-1 == ridx) {
+            if (string::npos == ridx) {
                 top = cache[full_name] = shared_ptr<Item>(new Item(full_name, sep));
             } else {
                 auto parent_name = full_name.substr(0,ridx);
@@ -122,7 +122,7 @@ namespace tree {
 
                 size_t ridx = items.rfind(sep);
 
-                if (-1 == ridx) {
+                if (string::npos == ridx) {
                     top = cache[items] = shared_ptr<Item>(new Item(items,sep));
                 } else {
                     auto parent_name = items.substr(0,ridx);

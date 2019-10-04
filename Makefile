@@ -1,6 +1,6 @@
 TARGET = ngv
-CFLAGS = -I. --std=c++11 -c -O2
-LDFLAGS = 
+CFLAGS = -Wall -I. --std=c++11 -c -O2
+LDFLAGS =
 CC = g++
 
 all: $(TARGET)
