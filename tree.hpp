@@ -1,8 +1,6 @@
 /*
    This is c++-11 sample
    hidekuno@gmail.com
-
-   g++ --std=c++11 tree.cpp -o tree
 */
 #ifndef  _TREE_HPP
 #define  _TREE_HPP
@@ -11,33 +9,20 @@
 #include <string>
 #include <iostream>
 #include <memory>
-#include <unordered_map>
-#include <vector>
-#include <sstream>
 #include <iostream>
 #include <cstdio>
-#include <fstream>
 #include <stdexcept>
+#include <vector>
 
-extern "C" {
-  #include "unistd.h"
-}
-
+using std::vector;
 using std::string;
 using std::list;
 using std::cout;
-using std::cerr;
 using std::endl;
 using std::shared_ptr;
 using std::weak_ptr;
-using std::unordered_map;
-using std::vector;
-using std::stringstream;
-using std::cin;
 using std::istream;
-using std::ifstream;
 using std::exception;
-using std::getline;
 
 namespace tree {
 
