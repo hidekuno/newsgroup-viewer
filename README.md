@@ -1,4 +1,4 @@
-ツリー表示プログラム
+newsgroup ツリー表示プログラム
 =================
 
 ## 概要
@@ -9,7 +9,6 @@
 | Item   | Ver. |備考|
 |--------|--------|--------|
 | OS     | CentOS7 | |
-| カーネル | 3.10.0-957.1.3||
 | GCC    | 4.8.5||
 
 ## ビルド
@@ -24,3 +23,4 @@ make
 ./newgroup.py > group.txt
 ./ngv -l < group.txt
 ```
+<img src="https://user-images.githubusercontent.com/22115777/66184854-64bd2880-e6b8-11e9-863e-867540098065.png" width=50%>
