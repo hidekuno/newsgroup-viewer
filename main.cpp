@@ -53,27 +53,28 @@ int main(int argc,char** argv) {
 		}
 	}
 
-	shared_ptr<Item> fj;
+	shared_ptr<Item> top;
 	try {
 		if (filename == "") {
-			create_tree_impl(fj, cin, DELIMITER_CHAR);
+			create_tree_impl(top, cin, DELIMITER_CHAR);
 		} else {
 			ifstream ifs(filename);
-			create_tree_impl(fj, ifs, DELIMITER_CHAR);
+			create_tree_impl(top, ifs, DELIMITER_CHAR);
 			ifs.close();
 		}
+        Visitor* v;
+        if (line) {
+            v = new LineItemVisitor("   ","|  ", "`--" ,"|--" );
+        } else if (mline) {
+            v = new LineItemVisitor("　　", "　┃","　┗━","　┣━");
+        } else {
+            v = new ItemVisitor();
+        }
+        top->accept(*v);
 	}
 	catch (exception& x) {
 		cerr << x.what() << endl;
+        rtc = 1;
 	}
-	Visitor* v;
-	if (line) {
-		v = new LineItemVisitor("   ","|  ", "`--" ,"|--" );
-	} else if (mline) {
-		v = new LineItemVisitor("　　", "　┃","　┗━","　┣━");
-	} else {
-		v = new ItemVisitor();
-	}
-	fj->accept(*v);
 	return rtc;
 }
