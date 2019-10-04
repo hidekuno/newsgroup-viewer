@@ -1,36 +1,21 @@
 /*
    This is c++-11 sample
    hidekuno@gmail.com
-
-   g++ --std=c++11 tree.cpp -o tree
 */
-#include <list>
 #include <string>
 #include <iostream>
 #include <memory>
-#include <vector>
-#include <sstream>
-#include <iostream>
 #include <cstdio>
 #include <fstream>
-#include <stdexcept>
 
 extern "C" {
   #include "unistd.h"
 }
+
 #include <tree.hpp>
-
-using std::cerr;
-using std::endl;
-using std::shared_ptr;
-using std::vector;
-using std::stringstream;
 using std::cin;
-using std::istream;
+using std::cerr;
 using std::ifstream;
-using std::exception;
-using std::getline;
-
 using tree::Visitor;
 using tree::ItemVisitor;
 using tree::LineItemVisitor;
