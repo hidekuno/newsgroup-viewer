@@ -21,6 +21,6 @@ make
 ## 動かし方
 ```
 ./newgroup.py > group.txt
-./ngv -l < group.txt
+./treeview -l < group.txt
 ```
 <img src="https://user-images.githubusercontent.com/22115777/66184854-64bd2880-e6b8-11e9-863e-867540098065.png" width=50%>
