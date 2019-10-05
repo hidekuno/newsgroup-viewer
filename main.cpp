@@ -34,7 +34,8 @@ int main(int argc,char** argv) {
     void (*create_tree_impl)(shared_ptr<Item>&, istream&, const char);
     create_tree_impl = create_tree;
 
-    for (int opt = 0; (opt = getopt(argc, argv, "f:lmo")) != -1; ) {
+    char delimiter = DELIMITER_CHAR;
+    for (int opt = 0; (opt = getopt(argc, argv, "f:lmod:")) != -1; ) {
         switch (opt) {
         case 'f':
             filename = optarg;
@@ -48,6 +49,9 @@ int main(int argc,char** argv) {
         case 'o':
             create_tree_impl = create_tree_ordered;
             break;
+        case 'd':
+            delimiter = optarg[0];
+            break;
         default:
             break;
         }
@@ -56,10 +60,10 @@ int main(int argc,char** argv) {
     shared_ptr<Item> top;
     try {
         if (filename == "") {
-            create_tree_impl(top, cin, DELIMITER_CHAR);
+            create_tree_impl(top, cin, delimiter);
         } else {
             ifstream ifs(filename);
-            create_tree_impl(top, ifs, DELIMITER_CHAR);
+            create_tree_impl(top, ifs, delimiter);
             ifs.close();
         }
         Visitor* v;
