@@ -1,4 +1,4 @@
-TARGET = ngv
+TARGET = treeview
 CFLAGS = -Wall -I. --std=c++11 -c -O2
 LDFLAGS =
 CC = g++
