@@ -1,9 +1,10 @@
-newsgroup ツリー表示プログラム
+
+ツリー表示ツール
 =================
 
 ## 概要
-- 暫くC++に触れていなかったので、簡単なプログラムを実装してみた。
-- 内容はnewgroupのリストをツリー表示する。
+- 暫くC++に触れていなかったので、簡単なツールを実装してみた。
+- 階層化された名前のテキストデータをツリー表示する。
 
 ## 開発環境
 | Item   | Ver. |備考|
@@ -13,8 +14,8 @@ newsgroup ツリー表示プログラム
 
 ## ビルド
 ```
-git clone https://github.com/hidekuno/newsgroup-viewer.git
-cd newsgroup-viewer
+git clone https://github.com/hidekuno/tree-viewer.git
+cd tree-viewer
 make
 ```
 
