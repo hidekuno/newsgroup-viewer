@@ -4,7 +4,6 @@
 */
 #include <unordered_map>
 #include <sstream>
-
 #include <tree.hpp>
 
 using std::stringstream;
@@ -76,6 +75,7 @@ namespace tree {
         static unordered_map< string,shared_ptr<Item> > cache;
         string full_name;
 
+        std::ios_base::sync_with_stdio(false);
         while (true) {
             if (!std::getline(in,full_name)) break;
 
