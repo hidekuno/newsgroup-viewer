@@ -51,15 +51,15 @@ namespace tree {
         const char sep;
 
     public:
-        Item(string& s,const char _sep) : name(s), sep(_sep) {};
+        Item(string& s, const char _sep) : name(s), sep(_sep) {};
         Item(string& s, shared_ptr<Item> p,const char _sep) : name(s), parent(p), sep(_sep) {};
 
 #if _DEBUG
         ~Item() {cout << "destructor:" + name << endl;};
 #endif
-        void add(ItemPtr c) { this->children.push_back(c); };
+        inline void add(ItemPtr c) { this->children.push_back(c); };
 
-        string myname() {
+        inline string myname() {
             size_t ridx = this->name.rfind(this->sep);
             return this->name.substr(ridx + 1);
         };
@@ -69,7 +69,7 @@ namespace tree {
         inline shared_ptr<Item> get_parent() {
             return  parent;
         };
-        void accept(Visitor& v) {
+        inline void accept(Visitor& v) {
             v.visit(*this);
         };
         const list<ItemPtr>::iterator iterator() {return children.begin();}
