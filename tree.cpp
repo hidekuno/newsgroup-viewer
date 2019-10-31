@@ -4,17 +4,17 @@
 */
 #include <unordered_map>
 #include <sstream>
+#include <google/dense_hash_map>
 #include <tree.hpp>
 
 using std::stringstream;
 using std::unordered_map;
+using std::hash;
 
 namespace tree {
 
     void ItemVisitor::visit(Item& item) {
-        for (int i = 0; i < level * 4; ++i) cout << " ";
-        cout << item.myname() << endl;
-
+        std::printf("%*s%s\n", level*4, "", item.myname().c_str());
         for (auto it = item.iterator(); it != item.iterator_end(); ++it) {
             shared_ptr<Item> si = item.get_ptr(it);
             level++;
@@ -23,7 +23,6 @@ namespace tree {
         }
     }
     void LineItemVisitor::visit(Item& item) {
-
         if (item.parent != nullptr) {
             vector<string> keisen;
             keisen.push_back((is_last(&item, item.parent->children.back()))?hline_last:hline_not_last);
@@ -33,11 +32,11 @@ namespace tree {
                 keisen.push_back((is_higher_last(c, c->parent->children.back()))?vline_last:vline_not_last);
                 c = c->parent;
             }
-            for (int i = keisen.size() - 1; 0 <= i; --i ){
-                cout << keisen[i];
+            for (auto it  = keisen.rbegin(); it != keisen.rend(); it++) {
+                std::printf("%s", (*it).c_str());
             }
         }
-        cout << item.myname() << endl;
+        std::printf("%s\n", item.myname().c_str());
         for (auto it = item.iterator(); it != item.iterator_end(); ++it) {
             shared_ptr<Item> si = item.get_ptr(it);
             si->accept(*this);
@@ -72,7 +71,9 @@ namespace tree {
     }
     void create_tree(shared_ptr<Item>& top, istream& in, const char sep) {
 
-        static unordered_map< string,shared_ptr<Item> > cache;
+        static google::dense_hash_map<string, shared_ptr<Item>, hash<string>> cache;
+        cache.set_empty_key("DUMMY");
+        cache.resize(40960);
         string full_name;
 
         std::ios_base::sync_with_stdio(false);
@@ -80,17 +81,15 @@ namespace tree {
             if (!std::getline(in,full_name)) break;
 
             string items = "";
-            vector<string> vec;
-            split(vec, full_name, sep);
-
-            for (auto it = vec.begin();  it != vec.end(); ++it) {
-
+            stringstream ss(full_name);
+            string it;
+            while (std::getline(ss, it, sep)) {
                 if (items == "") {
-                    items = *it;
+                    items = it;
                 } else {
-                    items = items + sep + *it;
+                    items += sep;
+                    items += it;
                 }
-
                 auto k = cache.find(items);
                 if (k != cache.end()) continue;
 
