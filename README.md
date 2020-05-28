@@ -20,6 +20,26 @@ cd tree-viewer
 make
 ```
 
+## google sparsehashのインストール
+ubuntu
+```
+sudo apt-get install libsparsehash-dev
+```
+centos
+```
+sudo yum install sparsehash-devel
+```
+mac
+```
+brew install google-sparsehash
+```
+
+## ビルド
+```
+git clone https://github.com/hidekuno/tree-viewer.git
+cd tree-viewer
+make
+```
 ## 動かし方
 ```
 ./newsgroup.py| ./treeview -l
