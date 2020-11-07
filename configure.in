@@ -8,10 +8,19 @@ AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_PROG_RANLIB
 
 # Checks for libraries.
 
 # Checks for header files.
+AC_LANG_PUSH([C++])
+AC_CHECK_HEADERS([cstdio,fstream,iostream], [], AC_MSG_ERROR([Missing  headers.]))
+AC_CHECK_HEADERS([list,vector,unordered_map], [], AC_MSG_ERROR([Missing  headers.]))
+AC_CHECK_HEADERS([string,sstream], [], AC_MSG_ERROR([Missing  headers.]))
+AC_CHECK_HEADERS([memory,stdexcept], [], AC_MSG_ERROR([Missing  headers.]))
+AC_CHECK_HEADERS([google/dense_hash_map], [], AC_MSG_ERROR([Missing google headers.]))
+AC_LANG_POP([C++])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
@@ -19,6 +28,5 @@ AC_C_INLINE
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
-
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
