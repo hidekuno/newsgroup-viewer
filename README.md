@@ -9,14 +9,16 @@
 ## 開発環境
 | Item   | Ver. |備考|
 |--------|--------|--------|
-| OS     | CentOS7 | |
-| GCC    | 4.8.5||
-| CPU    | Intel(R) Core(TM) i3-2120 CPU @ 3.30GHz |
+| OS     | Ubuntu 18.04.5 LTS | |
+| GCC    | 9.3.0||
+| CPU    | Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz|
 
 ## ビルド
 ```
 git clone https://github.com/hidekuno/tree-viewer.git
 cd tree-viewer
+autoconf
+./configure
 make
 ```
 
