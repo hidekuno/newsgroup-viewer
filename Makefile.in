@@ -19,7 +19,7 @@ main.o:	tree.hpp main.cpp
 	$(CC) $(CFLAGS) main.cpp
 
 clean:
-	rm -f $(TARGET) *.o *.class
+	rm -rf $(TARGET) *.o *.class *.cache configure *.log *.status config.h Makefile
 
 class:
 	$(CC) $(CFLAGS) -fdump-class-hierarchy tree.cpp
