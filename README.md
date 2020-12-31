@@ -44,6 +44,7 @@ make
 ```
 ## 動かし方
 ```
-./newsgroup.py| ./treeview -l
+./newsgroup.py| | ^gmane\. | ./treeview -l
+./newsgroup.py| | ^gwene\. | ./treeview -l
 ```
 <img src="https://user-images.githubusercontent.com/22115777/66184854-64bd2880-e6b8-11e9-863e-867540098065.png" width=50%>
