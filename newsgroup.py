@@ -10,7 +10,7 @@ import nntplib
 from html.parser import HTMLParser
 
 def gmane():
-    s = nntplib.NNTP('news.gmane.org')
+    s = nntplib.NNTP('news.gmane.io')
     for n in s.list()[1]:
         print(n.group)
     s.quit()
