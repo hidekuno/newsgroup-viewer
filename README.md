@@ -13,23 +13,12 @@
 | GCC    | 9.3.0||
 | CPU    | Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz|
 
-## ビルド
-```
-git clone https://github.com/hidekuno/tree-viewer.git
-cd tree-viewer
-autoconf
-./configure
-make
-```
-
-## google sparsehashのインストール
+## 開発ツールのインストール
 ubuntu
 ```
+sudo apt-get update
+sudo apt-get install g++ autoconf make git
 sudo apt-get install libsparsehash-dev
-```
-centos
-```
-sudo yum install sparsehash-devel
 ```
 mac
 ```
@@ -40,8 +29,11 @@ brew install google-sparsehash
 ```
 git clone https://github.com/hidekuno/tree-viewer.git
 cd tree-viewer
+autoconf
+./configure
 make
 ```
+
 ## 動かし方
 ```
 ./newsgroup.py| | ^gmane\. | ./treeview -l
