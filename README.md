@@ -22,6 +22,7 @@ sudo apt-get install libsparsehash-dev
 ```
 mac
 ```
+brew install autoconf
 brew install google-sparsehash
 ```
 
