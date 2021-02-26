@@ -66,6 +66,9 @@ int main(int argc,char** argv) {
             create_tree_impl(top, ifs, delimiter);
             ifs.close();
         }
+        if (top.get() == nullptr) {
+            return rtc;
+        }
         Visitor* v;
         if (line) {
             v = new LineItemVisitor("   ","|  ", "`--" ,"|--" );
