@@ -71,9 +71,9 @@ int main(int argc,char** argv) {
         }
         Visitor* v;
         if (line) {
-            v = new LineItemVisitor("   ","|  ", "`--" ,"|--" );
+            v = new LineItemVisitor("    ","|   ", "`-- " ,"|-- " );
         } else if (mline) {
-            v = new LineItemVisitor("　　", "　┃","　┗━","　┣━");
+            v = new LineItemVisitor("　　 " ,"┃　 ", "└── "  ,"├── " );
         } else {
             v = new ItemVisitor();
         }
