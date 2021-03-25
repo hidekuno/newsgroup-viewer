@@ -9,6 +9,9 @@ CC = @CXX@
 
 all: $(TARGET)
 
+FDUMP89=-fdump-lang-class
+FDUMP=-fdump-class-hierarchy
+
 $(TARGET):	tree.o main.o
 	$(CC) $(LDFLAGS) tree.o main.o -o $(TARGET)
 
@@ -22,4 +25,4 @@ clean:
 	rm -rf $(TARGET) *.o *.class *.cache configure *.log *.status config.h Makefile
 
 class:
-	$(CC) $(CFLAGS) -fdump-class-hierarchy tree.cpp
+	if [ -x /usr/bin/g++-[89] ]; then $(CC) $(CFLAGS) $(FDUMP89) tree.cpp; else $(CC) $(CFLAGS) $(FDUMP); fi
