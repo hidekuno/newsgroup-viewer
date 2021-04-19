@@ -7,6 +7,7 @@ import sys
 import argparse
 import urllib.request
 import nntplib
+import traceback
 from html.parser import HTMLParser
 
 def gmane():
@@ -41,5 +42,5 @@ try:
         fj()
 
 except Exception as e:
-    traceback.print_exc()
-
+    print(e, traceback.format_exc(), file=sys.stderr)
+    sys.exit(1)
