@@ -33,7 +33,7 @@ namespace tree {
 
     void split(vector<string>&, const string&, const char);
     void create_tree_ordered(shared_ptr<Item>&, istream&, const char);
-    void create_tree(shared_ptr<Item>&, istream&, const char);
+    void create_tree(shared_ptr<Item>&, istream&, const char, int);
 
     class Visitor {
     public:
