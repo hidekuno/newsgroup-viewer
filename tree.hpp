@@ -35,6 +35,14 @@ namespace tree {
     void create_tree_ordered(shared_ptr<Item>&, istream&, const char);
     void create_tree(shared_ptr<Item>&, istream&, const char, int);
 
+    enum class LineKind {
+        Nothing,
+        HalfSize,
+        MultiSize,
+        MultiSizeBold
+    };
+    Visitor* create_visitor(LineKind& lk);
+
     class Visitor {
     public:
         virtual void visit(Item& item) = 0;
@@ -82,6 +90,7 @@ namespace tree {
     public:
         virtual void visit(Item&);
     };
+
     class LineItemVisitor : public Visitor {
     private:
         string vline_last;
@@ -100,6 +109,10 @@ namespace tree {
     public:
         LineItemVisitor(string vl,string vnl,string hl,string hnl)
             : vline_last(vl),vline_not_last(vnl),hline_last(hl),hline_not_last(hnl){};
+
+        LineItemVisitor(string* l)
+            : vline_last(l[0]),vline_not_last(l[1]),hline_last(l[2]),hline_not_last(l[3]){};
+
         virtual void visit(Item&);
     };
 }

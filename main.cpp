@@ -11,37 +11,39 @@
 extern "C" {
     #include "unistd.h"
 }
-
 #include <tree.hpp>
+
 using std::cin;
 using std::cerr;
 using std::ifstream;
 using tree::Visitor;
-using tree::ItemVisitor;
-using tree::LineItemVisitor;
 using tree::create_tree;
 using tree::Item;
 using tree::create_tree_ordered;
+using tree::create_visitor;
+using tree::LineKind;
 
 const char DELIMITER_CHAR = '.';
 const int  MAX_LEVEL = 10;
-const int  SUCCESS = 0;
-const int  ERROR   = -1;
 
-int do_logic(char delimiter, bool ordered, int level, string& filename, Visitor* v) {
+enum class Ret {
+    SUCCESS,
+    ERROR,
+};
 
-    int rtc = SUCCESS;
+Ret do_logic(char delimiter, bool ordered, int level, string& filename, Visitor* v) {
 
     try {
         shared_ptr<Item> top;
         istream* in = &cin;
         ifstream ifs;
 
-        if (filename != "") {
+        if (!filename.empty()) {
             ifs.open(filename);
+
             if  (ifs.fail()) {
                 cerr << "file open fault" << endl;
-                return ERROR;
+                return Ret::ERROR;
             }
             in = &ifs;
         }
@@ -51,59 +53,49 @@ int do_logic(char delimiter, bool ordered, int level, string& filename, Visitor*
             create_tree(top, *in, delimiter, level);
         }
         if (top.get() == nullptr) {
-            return SUCCESS;
+            return Ret::SUCCESS;
         }
         top->accept(*v);
+
+        // Not close stream
     }
     catch (exception& x) {
         cerr << x.what() << endl;
-        rtc = ERROR;
+        return Ret::ERROR;
     }
-    return rtc;
+    return Ret::SUCCESS;
 }
-
+// return value 0 is error
 int get_level(string& arg_level) {
     int  level = MAX_LEVEL;
 
-    if (arg_level != "") {
-        for (char const &c : arg_level) {
-            if (std::isdigit(c) == 0) {
-                cerr << "invalid value" << endl;
-                return ERROR;
-            }
-        }
-        level = atoi(arg_level.c_str());
+    if (arg_level.empty()) {
+        return level;
+    }
 
-        if (level > MAX_LEVEL) {
+    for (char const &c : arg_level) {
+        if (std::isdigit(c) == 0) {
             cerr << "invalid value" << endl;
-            return ERROR;
+            return 0;
         }
+    }
+    level = atoi(arg_level.c_str());
+
+    if (level > MAX_LEVEL) {
+        cerr << "invalid value" << endl;
+        return 0;
     }
     return level;
 }
-Visitor* create_visitor(bool line, bool mline) {
-
-    Visitor* v;
-
-    if (line) {
-        v = new LineItemVisitor("    ","|   ", "`-- " ,"|-- " );
-    } else if (mline) {
-        v = new LineItemVisitor("　　 " ,"┃　 ", "└── "  ,"├── " );
-    } else {
-        v = new ItemVisitor();
-    }
-
-    return v;
-}
 int main(int argc,char** argv) {
 
-    string filename = "";
-    bool line = false;
-    bool mline = false;
-    bool ordered = false;
 
+    LineKind lk = LineKind::Nothing;
+    bool ordered = false;
     char delimiter = DELIMITER_CHAR;
-    string arg_level = "";
+
+    string filename;
+    string arg_level;
 
     for (int opt = 0; (opt = getopt(argc, argv, "f:lmod:n:")) != -1; ) {
         switch (opt) {
@@ -111,10 +103,10 @@ int main(int argc,char** argv) {
             filename = optarg;
             break;
         case 'l':
-            line = true;
+            lk = LineKind::HalfSize;
             break;
         case 'm':
-            mline = true;
+            lk = LineKind::MultiSize;
             break;
         case 'o':
             ordered = true;
@@ -129,19 +121,19 @@ int main(int argc,char** argv) {
             break;
         }
     }
-    if (ordered && arg_level != "") {
+    if (ordered && !arg_level.empty()) {
         cerr << "not both option -o and -n" << endl;
         return 1;
     }
 
     auto level = get_level(arg_level);
-    if (ERROR == level){
+    if (0 == level) {
         return 1;
     }
 
-    auto v = create_visitor(line,mline);
+    auto v = create_visitor(lk);
 
-    if (ERROR == do_logic(delimiter, ordered, level, filename, v)) {
+    if (Ret::ERROR == do_logic(delimiter, ordered, level, filename, v)) {
         return 1;
     }
     return 0;
