@@ -111,15 +111,12 @@ namespace tree {
     }
     Visitor* create_visitor(LineKind& lk) {
 
-        string lines[][4] = {{"    ",  "|   ", "`-- " , "|-- " },
+        string lines[][4] = {{"    ",  "|   ", "`-- " , "|-- "},
                              {"　　 " ,"│　 ", "└── " , "├── "},
                              {"　　 " ,"┃　 ", "┗━ "  , "┣━ " }};
         Visitor* v;
 
         switch (lk) {
-        case LineKind::Nothing:
-            v = new ItemVisitor();
-            break;
         case LineKind::HalfSize:
             v = new LineItemVisitor(lines[0]);
             break;
@@ -129,6 +126,7 @@ namespace tree {
         case LineKind::MultiSizeBold:
             v = new LineItemVisitor(lines[2]);
             break;
+        case LineKind::Nothing:
         default:
             v = new ItemVisitor();
         }
