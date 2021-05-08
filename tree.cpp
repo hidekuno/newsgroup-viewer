@@ -69,7 +69,7 @@ namespace tree {
             }
         }
     }
-    void create_tree(shared_ptr<Item>& top, istream& in, const char sep) {
+    void create_tree(shared_ptr<Item>& top, istream& in, const char sep, int level) {
 
         static google::dense_hash_map<string, shared_ptr<Item>, hash<string>> cache;
         cache.set_empty_key("DUMMY");
@@ -83,18 +83,21 @@ namespace tree {
             string items = "";
             stringstream ss(full_name);
             string it;
-            while (std::getline(ss, it, sep)) {
+
+            for (int c = 0; std::getline(ss, it, sep); c++) {
                 if (items == "") {
                     items = it;
                 } else {
                     items += sep;
                     items += it;
                 }
+                if (c > level) {
+                    break;
+                }
                 auto k = cache.find(items);
                 if (k != cache.end()) continue;
 
                 size_t ridx = items.rfind(sep);
-
                 if (string::npos == ridx) {
                     top = cache[items] = shared_ptr<Item>(new Item(items,sep));
                 } else {
@@ -105,5 +108,29 @@ namespace tree {
                 }
             }
         }
+    }
+    Visitor* create_visitor(LineKind& lk) {
+
+        string lines[][4] = {{"    ",  "|   ", "`-- " , "|-- "},
+                             {"　　 " ,"│　 ", "└── " , "├── "},
+                             {"　　 " ,"┃　 ", "┗━ "  , "┣━ " }};
+        Visitor* v;
+
+        switch (lk) {
+        case LineKind::HalfSize:
+            v = new LineItemVisitor(lines[0]);
+            break;
+        case LineKind::MultiSize:
+            v = new LineItemVisitor(lines[1]);
+            break;
+        case LineKind::MultiSizeBold:
+            v = new LineItemVisitor(lines[2]);
+            break;
+        case LineKind::Nothing:
+        default:
+            v = new ItemVisitor();
+        }
+
+        return v;
     }
 }
