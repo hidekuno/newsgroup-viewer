@@ -89,7 +89,6 @@ int get_level(string& arg_level) {
 }
 int main(int argc,char** argv) {
 
-
     LineKind lk = LineKind::Nothing;
     bool ordered = false;
     char delimiter = DELIMITER_CHAR;
@@ -97,7 +96,8 @@ int main(int argc,char** argv) {
     string filename;
     string arg_level;
 
-    for (int opt = 0; (opt = getopt(argc, argv, "f:lmod:n:")) != -1; ) {
+    for (int opt = 0; (opt = getopt(argc, argv, "f:lmbod:n:")) != -1; ) {
+
         switch (opt) {
         case 'f':
             filename = optarg;
@@ -108,6 +108,9 @@ int main(int argc,char** argv) {
         case 'm':
             lk = LineKind::MultiSize;
             break;
+        case 'b':
+            lk = LineKind::MultiSizeBold;
+            break;
         case 'o':
             ordered = true;
             break;
@@ -117,6 +120,9 @@ int main(int argc,char** argv) {
         case 'n':
             arg_level = optarg;
             break;
+        case '?':
+            return 1;
+
         default:
             break;
         }
