@@ -26,14 +26,10 @@ using std::exception;
 
 namespace tree {
 
-    class Visitor;
-    class ItemVisitor;
-    class LineItemVisitor;
-    class Item;
-
-    void split(vector<string>&, const string&, const char);
-    void create_tree_ordered(shared_ptr<Item>&, istream&, const char);
-    void create_tree(shared_ptr<Item>&, istream&, const char, int);
+    template <class _T>  class Visitor;
+    template <class _T>  class ItemVisitor;
+    template <class _T>  class LineItemVisitor;
+    template <class _T>  class Item;
 
     enum class LineKind {
         Nothing,
@@ -41,69 +37,72 @@ namespace tree {
         MultiSize,
         MultiSizeBold
     };
-    Visitor* create_visitor(LineKind& lk);
 
+    template <class T>
     class Visitor {
     public:
-        virtual void visit(Item& item) = 0;
+        virtual void visit(Item<T>& item) = 0;
     };
-    typedef weak_ptr<Item> ItemPtr;
 
+    template <class T>
+    using ItemPtr = weak_ptr<Item<T>>;
+
+    template<class T>
     class Item {
-        friend class LineItemVisitor;
+        friend class LineItemVisitor<T>;
 
     private:
-        string name;
+        T element;
         shared_ptr<Item> parent;
-        list<ItemPtr> children;
-        const char sep;
+        list<ItemPtr<T>> children;
 
     public:
-        Item(string& s, const char _sep) : name(s), sep(_sep) {};
-        Item(string& s, shared_ptr<Item> p,const char _sep) : name(s), parent(p), sep(_sep) {};
+        Item(T _element) : element(_element) {};
+        Item(T _element, shared_ptr<Item> p) : element(_element), parent(p) {};
 
 #if _DEBUG
-        ~Item() {cout << "destructor:" + name << endl;};
+        ~Item() {cout << "destructor:" << endl;};
 #endif
-        inline void add(ItemPtr c) { this->children.push_back(c); };
+        inline void add(ItemPtr<T> c) { this->children.push_back(c); };
 
         inline string myname() {
-            size_t ridx = this->name.rfind(this->sep);
-            return this->name.substr(ridx + 1);
+            return this->element.myname();
         };
-        inline shared_ptr<Item> get_ptr(list<ItemPtr>::iterator it) {
+        inline shared_ptr<Item<T>> get_ptr(typename list<ItemPtr<T>>::iterator it) {
             return  it->lock();
         };
-        inline shared_ptr<Item> get_parent() {
+        inline shared_ptr<Item<T>> get_parent() {
             return  parent;
         };
-        inline void accept(Visitor& v) {
+        inline void accept(Visitor<T>& v) {
             v.visit(*this);
         };
-        const list<ItemPtr>::iterator iterator() {return children.begin();}
-        const list<ItemPtr>::iterator iterator_end() {return children.end();}
+        const typename list<ItemPtr<T>>::iterator iterator() {return children.begin();}
+        const typename list<ItemPtr<T>>::iterator iterator_end() {return children.end();}
     };
 
-    class ItemVisitor : public Visitor {
+    template<class T>
+    class ItemVisitor : public Visitor<T> {
     private:
         int level = 0;
     public:
-        virtual void visit(Item&);
+        virtual void visit(Item<T>&);
     };
 
-    class LineItemVisitor : public Visitor {
+    template<class T>
+    class LineItemVisitor : public Visitor<T> {
     private:
         string vline_last;
         string vline_not_last;
         string hline_last;
         string hline_not_last;
 
-        inline bool is_last(Item* p, ItemPtr& last_item) {
-            shared_ptr<Item> si = last_item.lock();
+        inline bool is_last(Item<T>* p, ItemPtr<T>& last_item) {
+            shared_ptr<Item<T>> si = last_item.lock();
             return (si.get() == p);
         };
-        inline bool is_higher_last(shared_ptr<Item>& self, ItemPtr& last_item) {
-            shared_ptr<Item> si = last_item.lock();
+        inline bool is_higher_last(shared_ptr<Item<T>>& self, ItemPtr<T>& last_item) {
+            shared_ptr<Item<T>> si = last_item.lock();
             return (si.get()== self.get());
         };
     public:
@@ -113,7 +112,31 @@ namespace tree {
         LineItemVisitor(string* l)
             : vline_last(l[0]),vline_not_last(l[1]),hline_last(l[2]),hline_not_last(l[3]){};
 
-        virtual void visit(Item&);
+        virtual void visit(Item<T>&);
     };
+    template <class T>
+    Visitor<T>* create_visitor(LineKind& lk) {
+
+        string lines[][4] = {{"    ",  "|   ", "`-- " , "|-- "},
+                             {"　　 " ,"│　 ", "└── " , "├── "},
+                             {"　　 " ,"┃　 ", "┗━━ " , "┣━━ " }};
+        Visitor<T>* v;
+
+        switch (lk) {
+        case LineKind::HalfSize:
+            v = new LineItemVisitor<T>(lines[0]);
+            break;
+        case LineKind::MultiSize:
+            v = new LineItemVisitor<T>(lines[1]);
+            break;
+        case LineKind::MultiSizeBold:
+            v = new LineItemVisitor<T>(lines[2]);
+            break;
+        case LineKind::Nothing:
+        default:
+            v = new ItemVisitor<T>();
+        }
+        return v;
+    }
 }
 #endif

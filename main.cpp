@@ -12,16 +12,18 @@ extern "C" {
     #include "unistd.h"
 }
 #include <tree.hpp>
+#include <path.hpp>
 
 using std::cin;
 using std::cerr;
 using std::ifstream;
 using tree::Visitor;
-using tree::create_tree;
 using tree::Item;
-using tree::create_tree_ordered;
-using tree::create_visitor;
 using tree::LineKind;
+using tree::create_visitor;
+using path::Path;
+using path::create_tree;
+using path::create_tree_ordered;
 
 const char DELIMITER_CHAR = '.';
 const int  MAX_LEVEL = 10;
@@ -31,10 +33,10 @@ enum class Ret {
     ERROR,
 };
 
-Ret do_logic(char delimiter, bool ordered, int level, string& filename, Visitor* v) {
+Ret do_logic(char delimiter, bool ordered, int level, string& filename, Visitor<Path>* v) {
 
     try {
-        shared_ptr<Item> top;
+        shared_ptr<Item<Path>> top;
         istream* in = &cin;
         ifstream ifs;
 
@@ -137,7 +139,7 @@ int main(int argc,char** argv) {
         return 1;
     }
 
-    auto v = create_visitor(lk);
+    auto v = create_visitor<Path>(lk);
 
     if (Ret::ERROR == do_logic(delimiter, ordered, level, filename, v)) {
         return 1;
