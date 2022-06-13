@@ -12,13 +12,16 @@ all: $(TARGET)
 FDUMP89=-fdump-lang-class
 FDUMP=-fdump-class-hierarchy
 
-$(TARGET):	tree.o main.o
-	$(CC) $(LDFLAGS) tree.o main.o -o $(TARGET)
+$(TARGET):	tree.o path.o main.o
+	$(CC) $(LDFLAGS) tree.o path.o main.o -o $(TARGET)
 
 tree.o:	tree.hpp tree.cpp
 	$(CC) $(CFLAGS) tree.cpp
 
-main.o:	tree.hpp main.cpp
+path.o:	tree.hpp path.hpp path.cpp
+	$(CC) $(CFLAGS) path.cpp
+
+main.o:	tree.hpp path.hpp main.cpp
 	$(CC) $(CFLAGS) main.cpp
 
 clean:
