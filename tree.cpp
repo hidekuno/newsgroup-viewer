@@ -48,7 +48,7 @@ namespace tree {
             si->accept(*this);
         }
     }
+    // Explicit Instance
+    template class ItemVisitor<Path>;
+    template class LineItemVisitor<Path>;
 }
-// Explicit Instance
-template class ItemVisitor<Path>;
-template class LineItemVisitor<Path>;
