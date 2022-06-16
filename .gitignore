@@ -1,12 +1,11 @@
 *.o
 *.txt
+*.log
 treeview
 gmon.out
 autom4te.cache
 configure
 config.status
 Makefile
-config.log
-autoscan.log
 configure.scan
 config.h

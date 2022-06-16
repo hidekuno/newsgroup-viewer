@@ -23,6 +23,7 @@ using std::shared_ptr;
 using std::weak_ptr;
 using std::istream;
 using std::exception;
+using std::unique_ptr;
 
 namespace tree {
 
@@ -52,13 +53,13 @@ namespace tree {
         friend class LineItemVisitor<T>;
 
     private:
-        T element;
+        unique_ptr<T> element;
         shared_ptr<Item> parent;
         list<ItemPtr<T>> children;
 
     public:
-        Item(T _element) : element(_element) {};
-        Item(T _element, shared_ptr<Item> p) : element(_element), parent(p) {};
+        Item(unique_ptr<T> _element) { this->element = std::move(_element); };
+        Item(unique_ptr<T> _element, shared_ptr<Item> p) : parent(p) { this->element = std::move(_element); };
 
 #if _DEBUG
         ~Item() {cout << "destructor:" << endl;};
@@ -66,13 +67,13 @@ namespace tree {
         inline void add(ItemPtr<T> c) { this->children.push_back(c); };
 
         inline string myname() {
-            return this->element.myname();
+            return this->element->myname();
         };
         inline shared_ptr<Item<T>> get_ptr(typename list<ItemPtr<T>>::iterator it) {
-            return  it->lock();
+            return it->lock();
         };
         inline shared_ptr<Item<T>> get_parent() {
-            return  parent;
+            return parent;
         };
         inline void accept(Visitor<T>& v) {
             v.visit(*this);
