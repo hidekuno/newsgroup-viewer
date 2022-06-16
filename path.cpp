@@ -12,11 +12,21 @@ using std::stringstream;
 using std::unordered_map;
 using std::hash;
 using std::shared_ptr;
+using std::unique_ptr;
 using std::istream;
 
 using tree::Item;
 using path::Path;
 
+inline shared_ptr<Item<Path>> create_path_record(string full_name,
+                                                 const char sep,
+                                                 shared_ptr<Item<Path>> parent = nullptr) {
+    if (parent == nullptr) {
+        return shared_ptr<Item<Path>>(new Item<Path>(unique_ptr<Path>(new Path(full_name, sep))));
+    } else {
+        return shared_ptr<Item<Path>>(new Item<Path>(unique_ptr<Path>(new Path(full_name, sep)), parent));
+    }
+}
 namespace path {
 
     void split(vector<string>& v, const string &str, const char sep) {
@@ -37,11 +47,11 @@ namespace path {
 
             size_t ridx = full_name.rfind(sep);
             if (string::npos == ridx) {
-                top = cache[full_name] = shared_ptr<Item<Path>>(new Item<Path>(Path(full_name, sep)));
+                top = cache[full_name] = create_path_record(full_name,sep);
             } else {
                 auto parent_name = full_name.substr(0,ridx);
                 auto parent = cache[parent_name];
-                cache[full_name] = shared_ptr<Item<Path>>(new Item<Path>(Path(full_name, sep),parent));
+                cache[full_name] = create_path_record(full_name,sep,parent);
                 parent->add(cache[full_name]);
             }
         }
@@ -76,11 +86,11 @@ namespace path {
 
                 size_t ridx = items.rfind(sep);
                 if (string::npos == ridx) {
-                    top = cache[items] = shared_ptr<Item<Path>>(new Item<Path>(Path(items,sep)));
+                    top = cache[items] = create_path_record(full_name,sep);
                 } else {
                     auto parent_name = items.substr(0,ridx);
                     auto parent = cache[parent_name];
-                    cache[items] = shared_ptr<Item<Path>>(new Item<Path>(Path(items,sep), parent));
+                    cache[items] = create_path_record(full_name,sep,parent);
                     parent->add(cache[items]);
                 }
             }
