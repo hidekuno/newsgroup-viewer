@@ -6,16 +6,12 @@
 #define  _PATH_HPP
 
 #include <string>
-#include <memory>
-#include <cstdio>
-#include <stdexcept>
 #include <vector>
 #include <tree.hpp>
 
 using std::vector;
 using std::string;
 using std::shared_ptr;
-using std::weak_ptr;
 using std::istream;
 
 using tree::Item;

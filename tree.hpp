@@ -7,11 +7,9 @@
 
 #include <list>
 #include <string>
-#include <iostream>
 #include <memory>
 #include <iostream>
 #include <cstdio>
-#include <stdexcept>
 #include <vector>
 
 using std::vector;
@@ -21,7 +19,6 @@ using std::cout;
 using std::endl;
 using std::shared_ptr;
 using std::weak_ptr;
-using std::istream;
 using std::exception;
 using std::unique_ptr;
 

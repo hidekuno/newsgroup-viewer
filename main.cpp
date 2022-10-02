@@ -3,9 +3,6 @@
    hidekuno@gmail.com
 */
 #include <string>
-#include <iostream>
-#include <memory>
-#include <cstdio>
 #include <fstream>
 
 extern "C" {

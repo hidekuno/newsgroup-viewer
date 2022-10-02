@@ -2,18 +2,9 @@
    This is c++-11 sample
    hidekuno@gmail.com
 */
-#include <unordered_map>
-#include <sstream>
-#include <google/dense_hash_map>
 #include <tree.hpp>
-
 #include <path.hpp>
-using std::stringstream;
-using std::unordered_map;
-using std::hash;
 using std::shared_ptr;
-using std::istream;
-
 using path::Path;
 
 namespace tree {
