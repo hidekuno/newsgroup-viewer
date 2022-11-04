@@ -15,10 +15,6 @@ using std::shared_ptr;
 using std::istream;
 
 using tree::Item;
-using tree::Visitor;
-using tree::LineKind;
-using tree::LineItemVisitor;
-using tree::ItemVisitor;
 
 namespace path {
 
