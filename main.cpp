@@ -3,6 +3,7 @@
    hidekuno@gmail.com
 */
 #include <string>
+#include <memory>
 #include <fstream>
 
 extern "C" {
@@ -11,6 +12,7 @@ extern "C" {
 #include <tree.hpp>
 #include <path.hpp>
 
+using std::exception;
 using std::cin;
 using std::cerr;
 using std::ifstream;
@@ -137,7 +139,6 @@ int main(int argc,char** argv) {
     }
 
     auto v = create_visitor<Path>(lk);
-
     if (Ret::ERROR == do_logic(delimiter, ordered, level, filename, v)) {
         return 1;
     }
